@@ -1,19 +1,19 @@
 package com.darsh.ZIRA_backend.modal;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Issue {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User assignee;
-
-    @ManyToOne
+    @OneToOne
     private Project project;
 }
