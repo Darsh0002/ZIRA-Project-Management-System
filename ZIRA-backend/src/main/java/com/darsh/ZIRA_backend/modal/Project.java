@@ -1,7 +1,6 @@
 package com.darsh.ZIRA_backend.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.jdi.PrimitiveValue;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +35,4 @@ public class Project {
 
     @ManyToMany
     private List<User> team;
-
 }
