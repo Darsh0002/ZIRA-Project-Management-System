@@ -4,7 +4,7 @@ import com.darsh.ZIRA_backend.config.JwtProvider;
 import com.darsh.ZIRA_backend.dto.AuthResponse;
 import com.darsh.ZIRA_backend.dto.LoginRequest;
 import com.darsh.ZIRA_backend.modal.User;
-import com.darsh.ZIRA_backend.service.UserService;
+import com.darsh.ZIRA_backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@RequestBody User user) throws Exception {
-        User existingUser = userService.getUser(user.getEmail());
+        User existingUser = authService.getUser(user.getEmail());
         if (existingUser != null) {
             return new ResponseEntity<>("Email Already Exists",HttpStatus.BAD_REQUEST);
         }
 
-        User savedUser = userService.createNewUser(user);
+        User savedUser = authService.createNewUser(user);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -47,7 +47,7 @@ public class AuthController {
         String email=req.getEmail();
         String password=req.getPassword();
 
-        Authentication authentication = userService.authenticateUser(email,password);
+        Authentication authentication = authService.authenticateUser(email,password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = JwtProvider.generateToken(authentication);
