@@ -32,4 +32,24 @@ public class ProjectController {
         List<Project> projects = projectService.getProjectByTeam(user, category, tag);
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Project> getProjectById(
+            @PathVariable Long projectId,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        Project project = projectService.getProjectById(projectId);
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Project> createProject(
+            @RequestBody Project project,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        Project createdProject = projectService.createProject(project, user);
+        return new ResponseEntity<>(createdProject, HttpStatus.OK);
+    }
 }
