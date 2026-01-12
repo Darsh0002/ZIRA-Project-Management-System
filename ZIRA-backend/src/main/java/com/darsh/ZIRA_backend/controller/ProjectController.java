@@ -52,4 +52,35 @@ public class ProjectController {
         Project createdProject = projectService.createProject(project, user);
         return new ResponseEntity<>(createdProject, HttpStatus.OK);
     }
+
+    @PatchMapping("/{projectId}")
+    public ResponseEntity<Project> updateProject(
+            @PathVariable Long projectId,
+            @RequestBody Project project,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        Project updatedProject = projectService.updateProject(project, projectId);
+        return new ResponseEntity<>(updatedProject, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<String> deleteProject(
+            @PathVariable Long projectid,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        projectService.deleteProject(projectid, user.getId());
+        return new ResponseEntity<>("Project Deleted Successfully!!", HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Project>> searchProjects(
+            @RequestParam(required = false) String keyword,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        List<Project> projects = projectService.searchProject(keyword,user);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
 }
