@@ -1,5 +1,6 @@
 package com.darsh.ZIRA_backend.controller;
 
+import com.darsh.ZIRA_backend.modal.Chat;
 import com.darsh.ZIRA_backend.modal.Project;
 import com.darsh.ZIRA_backend.modal.User;
 import com.darsh.ZIRA_backend.service.ProjectService;
@@ -80,7 +81,17 @@ public class ProjectController {
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
         User user = userService.findUserProfileByJwt(jwt);
-        List<Project> projects = projectService.searchProject(keyword,user);
+        List<Project> projects = projectService.searchProject(keyword, user);
         return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}/chat")
+    public ResponseEntity<Chat> getChatByProjectId(
+            @PathVariable Long projectId,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        Chat chat = projectService.getChatByProjectId(projectId);
+        return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 }
