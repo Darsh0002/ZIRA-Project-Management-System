@@ -1,8 +1,11 @@
 package com.darsh.ZIRA_backend.controller;
 
+import com.darsh.ZIRA_backend.dto.InviteRequest;
 import com.darsh.ZIRA_backend.modal.Chat;
+import com.darsh.ZIRA_backend.modal.Invitation;
 import com.darsh.ZIRA_backend.modal.Project;
 import com.darsh.ZIRA_backend.modal.User;
+import com.darsh.ZIRA_backend.service.InvitationService;
 import com.darsh.ZIRA_backend.service.ProjectService;
 import com.darsh.ZIRA_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class ProjectController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InvitationService invitationService;
 
     @GetMapping
     public ResponseEntity<List<Project>> getProjects(
@@ -93,5 +99,26 @@ public class ProjectController {
         User user = userService.findUserProfileByJwt(jwt);
         Chat chat = projectService.getChatByProjectId(projectId);
         return new ResponseEntity<>(chat, HttpStatus.OK);
+    }
+
+    @PostMapping("/invite")
+    public ResponseEntity<String> inviteProject(
+            @RequestBody InviteRequest req,
+            @RequestBody Project project,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        invitationService.sendInvitation(req.getEmail(), req.getProjectId());
+        return new ResponseEntity<>("Invitation Sent Successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/accept_invitation")
+    public ResponseEntity<Invitation> acceptInviteProject(
+            @RequestParam String token,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        User user = userService.findUserProfileByJwt(jwt);
+        Invitation invitation = invitationService.acceptInvitation(token, user.getId());
+        projectService.addUserToProject(invitation.getProjectId(), user.getId());
+        return new ResponseEntity<>(invitation, HttpStatus.ACCEPTED);
     }
 }
