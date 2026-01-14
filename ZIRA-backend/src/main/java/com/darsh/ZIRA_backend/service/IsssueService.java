@@ -18,6 +18,9 @@ public class IsssueService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private UserService userService;
+
     public Issue getIssueById(Long issueId) throws Exception {
         return issueRepo.findById(issueId)
                 .orElseThrow(() -> new RuntimeException("No Issue Found With Id: " + issueId));
@@ -39,6 +42,25 @@ public class IsssueService {
         issue.setPriority(issue.getPriority());
         issue.setDueDate(issueRequest.getDueDate());
 
+        return issueRepo.save(issue);
+    }
+
+    public void deleteIssue(Long issueId, Long userId) throws Exception {
+        getIssueById(issueId);
+        issueRepo.deleteById(issueId);
+    }
+
+    public Issue addUserToIssue(Long issueId,Long userId) throws Exception {
+        User user = userService.findUserById(userId);
+        Issue issue = getIssueById(issueId);
+        issue.setAssignee(user);
+
+        return issueRepo.save(issue);
+    }
+
+    public Issue updateStatus(Long issueId,String status) throws Exception {
+        Issue issue = getIssueById(issueId);
+        issue.setStatus(status);
         return issueRepo.save(issue);
     }
 }
