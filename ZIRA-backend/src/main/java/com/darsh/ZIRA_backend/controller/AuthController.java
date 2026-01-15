@@ -5,6 +5,7 @@ import com.darsh.ZIRA_backend.dto.AuthResponse;
 import com.darsh.ZIRA_backend.dto.LoginRequest;
 import com.darsh.ZIRA_backend.modal.User;
 import com.darsh.ZIRA_backend.service.AuthService;
+import com.darsh.ZIRA_backend.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
+
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@RequestBody User user) throws Exception {
         User existingUser = authService.getUser(user.getEmail());
@@ -31,6 +35,7 @@ public class AuthController {
         }
 
         User savedUser = authService.createNewUser(user);
+        subscriptionService.createSubscription(savedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
