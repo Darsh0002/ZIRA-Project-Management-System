@@ -38,7 +38,7 @@ public class IssueService {
         issue.setDescription(issueRequest.getDescription());
         issue.setStatus(issueRequest.getStatus());
         issue.setProject(project);
-        issue.setProjectId(issue.getProjectId());
+        issue.setProjectID(issue.getProjectID());
         issue.setPriority(issue.getPriority());
         issue.setDueDate(issueRequest.getDueDate());
 
