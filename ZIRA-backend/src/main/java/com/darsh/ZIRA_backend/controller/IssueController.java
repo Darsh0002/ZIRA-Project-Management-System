@@ -32,7 +32,7 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createIssue(
+    public ResponseEntity<Issue> createIssue(
             @RequestBody IssueRequest issue,
             @RequestHeader("Authorization") String token
     ) throws Exception {
@@ -41,11 +41,11 @@ public class IssueController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Issue createdIssue = issueService.createIssue(issue, user);
-        return ResponseEntity.ok("Issue Created Successfully");
+        return ResponseEntity.ok(createdIssue);
     }
 
     @DeleteMapping("/{issueId}")
-    public ResponseEntity<String> createIssue(
+    public ResponseEntity<String> deleteIssue(
             @PathVariable Long issueId,
             @RequestHeader("Authorization") String token
     ) throws Exception {
