@@ -1,6 +1,7 @@
 package com.darsh.ZIRA_backend.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,8 @@ public class User {
 
     private String fullName;
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Don't send password in response
     private String password;
 
     @JsonIgnore

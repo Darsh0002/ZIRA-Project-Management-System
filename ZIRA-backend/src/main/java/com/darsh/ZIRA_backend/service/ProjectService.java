@@ -37,7 +37,7 @@ public class ProjectService {
         Chat projectChat = chatService.createChat(chat);
         savedProject.setChat(projectChat);
 
-        return savedProject;
+        return projectRepo.save(savedProject);
     }
 
     public List<Project> getProjectByTeam(User user, String category, String tag) throws Exception {

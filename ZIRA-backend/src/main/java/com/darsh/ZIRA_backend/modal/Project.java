@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,8 +32,8 @@ public class Project {
     private User owner;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Issue> issues;
+    private List<Issue> issues=new ArrayList<>();
 
     @ManyToMany
-    private List<User> team;
+    private List<User> team = new ArrayList<>();
 }
