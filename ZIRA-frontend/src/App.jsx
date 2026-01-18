@@ -1,13 +1,11 @@
-import { useState } from 'react'
+import { Button } from "@/components/ui/button";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1 className='text-8xl'>bjke</h1>
-    </>
-  )
+    <div className="p-6">
+      <Button>ZIRA UI Ready 🚀</Button>
+    </div>
+  );
 }
 
-export default App
+export default App;
