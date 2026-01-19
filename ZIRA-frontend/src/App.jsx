@@ -1,11 +1,13 @@
-import { Button } from "@/components/ui/button";
+import React from "react";
+import Home from "./pages/Home";
 
-function App() {
+const App = () => {
   return (
-    <div className="p-6">
-      <Button>ZIRA UI Ready 🚀</Button>
-    </div>
+    <>
+      <Home />
+      
+    </>
   );
-}
+};
 
 export default App;
